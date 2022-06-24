@@ -14,7 +14,9 @@ server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
     const body = Buffer.concat(arr).toString();
     console.log("body", body);
   });
-  res.end("hi");
+  res.statusCode = 404;
+  res.setHeader("X-f", "I am f");
+  res.end();
 });
 
 server.listen(8888);
