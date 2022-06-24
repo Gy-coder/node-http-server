@@ -1,9 +1,10 @@
-import * as http from 'http'
+import * as http from "http";
 
-const server = http.createServer()
+const server = http.createServer();
 
-server.on('request',()=> {
-  console.log('有人请求了')
-})
+server.on("request", (req, res) => {
+  console.log("有人请求了");
+  res.end("hi");
+});
 
-server.listen(8888)
+server.listen(8888);
