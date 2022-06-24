@@ -9,6 +9,11 @@ const publicPath = p.resolve(__dirname, "public");
 server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
   const { method, url: path, headers } = req;
   const { search, pathname } = url.parse(path as string);
+  if (method === "POST") {
+    res.statusCode = 405;
+    res.end();
+    return;
+  }
   let filename = pathname!.slice(1);
   if (filename === "") filename = "index.html";
   fs.readFile(p.resolve(publicPath, filename), (err, data) => {
@@ -23,6 +28,7 @@ server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
         res.end("server error");
       }
     } else {
+      res.setHeader("Cache-Control", "public,max-age=20000000");
       res.end(data);
     }
   });
@@ -31,10 +37,3 @@ server.on("request", (req: http.IncomingMessage, res: http.ServerResponse) => {
 server.listen(8888, () => {
   console.log("success");
 });
-
-// case "/index.html":
-//       fs.readFile(p.resolve(publicPath, "index.html"), (err, data) => {
-//         if (err) throw err;
-//         res.end(data.toString());
-//       });
-//       break;
